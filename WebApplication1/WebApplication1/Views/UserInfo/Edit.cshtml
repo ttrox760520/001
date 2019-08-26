@@ -1,0 +1,61 @@
+﻿@model List<WebApplication1.Models.UserInfoViewModel>
+@* ↑ 宣告ViewModel，請注意一個View只會對應到一個Model *@
+
+@{
+    ViewBag.Title = "修改員工資料";@ViewBag.newuserid
+}
+<h2>@ViewBag.Title</h2>
+<hr>
+@using (Html.BeginForm("Edit", "UserInfo", FormMethod.Post, new { @id = "UserInfo" }))
+{
+
+    <pre>   
+       編號：<input data-val="true" data-val-required="UserID為必要輸入欄位" id="UserID" name="UserID" type="text" value=@Model[0].UserID disabled="disabled" }><br />
+       姓名：<input data-val="true" data-val-required="UserNameEN為必要輸入欄位" id="UserName" name="UserName" type="text" value=@Model[0].UserName><br />
+      Phone：<input data-val="true" data-val-required="Address為必要輸入欄位" id="Phone" name="Phone" type="text" value=@Model[0].Phone><br />
+      Email：<input data-val="true" data-val-required="Email為必要輸入欄位" id="Email" name="Email" type="text" value=@Model[0].Email><br />
+       <input type="submit" id="submit" value="確定">  <input type="reset" value="取消變更"><br />
+     </pre>
+    <input type="hidden" name="UserID" value=@Model[0].UserID>
+}
+
+
+@section scripts{
+    <script>
+        $(document).ready(function ()
+        {
+        var message = '@ViewData["Message"]'; //宣告message接controller內設定的Message
+        if (message != null && message != '') //如果訊息不是 無/空字串
+        {
+            alert(message); //顯示Controller內設定的訊息
+        }
+        });
+        document.getElementById("submit").onclick = function ()
+        {
+           return CheckEmail();
+        };
+
+        function CheckEmail()
+        {
+            var ID = '@Model[0].UserID';
+            var NewID = $('#UserID').val();
+            var UserName = '@Model[0].UserName';
+            var NewUserName = $('#UserName').val();
+            var Phone = '@Model[0].Phone';
+            var NewPhone = $('#Phone').val();
+            var Email = '@Model[0].Email';
+            var NewEmail = $('#Email').val();
+            if (ID == NewID && UserName == NewUserName && Phone == NewPhone && Email == NewEmail) {
+                alert("資料完全相同,尚未修改!");
+                return false;
+            }
+            var checkEmail = document.getElementById("Email").value;
+            var EmailRule = /^([a-zA-Z0-9_\.\-\+])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!EmailRule.test(checkEmail))
+            {
+                alert("信箱格式錯誤");
+                return false;
+            }
+        }
+    </script>
+}

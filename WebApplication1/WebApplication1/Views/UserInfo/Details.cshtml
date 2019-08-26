@@ -1,0 +1,76 @@
+﻿@model WebApplication1.Models.UserInfoViewModel
+
+@{
+    ViewBag.Title = "客戶詳細資料";@ViewBag.newuserid
+}
+
+<h2>客戶詳細資料</h2>
+<hr />
+@*@Model.Email*@
+@using (Html.BeginForm("Details", "UserInfo", FormMethod.Post, new  { @id = "form" }))
+{
+    <pre>   
+       編號：@Html.TextBoxFor(m => m.UserID, new { disabled = "disabled" }) @Html.HiddenFor(m => m.UserID)<br />
+       姓名：@Html.TextBoxFor(m => m.UserName, new {disabled = "disabled" }) @Html.HiddenFor(m => m.UserName)<br />
+      Phone：@Html.TextBoxFor(m => m.Phone, new {@class="Phone" , disabled = "true" }) @Html.HiddenFor(m => m.Phone)<br />
+      Email：@Html.TextBoxFor(m => m.Email, new {@class="Email" , disabled = "true"  }) @Html.HiddenFor(m => m.Email)<br />
+    <input type="submit" value="確定" id="submit" name="submit"> <input type="button" value="修改" id="edit" name="edit"><br />
+    <input type="submit"  value="確定修改" id="editsubmit" name="editsubmit" style="visibility:hidden">
+     </pre>
+}
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            var message = '@ViewData["Message"]';
+            if (message != null && message != '')
+            {
+            alert(message); //顯示Controller內設定的訊息
+            }
+        });
+        document.getElementById("edit").onclick = function () { EditFunction() };
+        function EditFunction()
+        {
+            $('#Phone').attr("disabled", false); 
+            $('#Email').attr("disabled", false); 
+            document.all["submit"].style.visibility = "hidden";
+            document.all["edit"].style.visibility = "hidden";
+            document.all["editsubmit"].style.visibility = "visible";
+        };
+        document.getElementById("editsubmit").onclick = function () { return DataCompare();  };
+        function DataCompare()
+        {
+            var ID = '@Model.UserID';
+            var NewID = $('#UserID').val();
+            var UserName = '@Model.UserName';
+            var NewUserName = $('#UserName').val();
+            var Phone = '@Model.Phone';
+            var NewPhone = $('#Phone').val();
+            var Email = '@Model.Email';
+            var NewEmail = $('#Email').val();
+            if (ID == NewID && UserName == NewUserName && Phone == NewPhone && Email == NewEmail) {
+                alert("資料完全相同,尚未修改!");
+                return false;
+            }
+            var checkEmail = document.getElementById("Email").value;
+            var EmailRule = /^([a-zA-Z0-9_\.\-\+])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!EmailRule.test(checkEmail))
+            {
+                alert("信箱格式錯誤");
+                return false;
+            }
+        };
+    </script>
+}
+
+
+
+
+
+
+
+

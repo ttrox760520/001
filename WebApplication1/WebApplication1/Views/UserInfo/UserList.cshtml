@@ -1,0 +1,68 @@
+﻿@model List<WebApplication1.Models.UserInfoViewModel>
+@* ↑ 宣告ViewModel，請注意一個View只會對應到一個Model *@
+
+@{
+        ViewBag.Title = "客戶資料清單";
+}
+
+@* ↓ 在這邊透過Razor+C#+HtmlHelper刻你要的Tag (Html) *@
+<h2>客戶資料清單</h2>
+<p>
+    @Html.ActionLink("新增", "Create", "UserInfo")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("序號")
+        </th>
+        <th>
+            @Html.DisplayName("客戶編號")
+        </th>
+        <th>
+            @Html.DisplayName("客戶姓名")
+        </th>
+        <th>
+            @Html.DisplayName("電話")
+        </th>
+        <th></th>
+    </tr>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.Label("seq", (i + 1).ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(p => Model[i].UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(p => Model[i].UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(p => Model[i].Phone)
+            </td>
+            <td>
+                @* 補充: @id = i為Url參數的寫法，Controller/Action/ActionParameter中的參數就會是i，也就是第幾筆資料 *@
+                @Html.ActionLink("編輯", "Edit", "UserInfo", new { @id = i }, null) |
+                @Html.ActionLink("詳細資料", "Details", "UserInfo", new { @id = i }, null) |
+                @* 補充: 最後一個參數onclick內可以放Url/method，以這個例子是回傳一個js method *@
+                @Html.ActionLink("刪除", "Delete", "UserInfo", new { @id = i }, new { @onclick = "return confirm('確定刪除?');" })
+            </td>
+        </tr>
+    }
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function ()
+        {
+        var message = '@ViewData["Message"]';
+        if (message != null && message != '')
+        {
+          alert(message);
+        }
+        });
+
+
+    </script>
+}

@@ -209,6 +209,10 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\UserInfo\Create.cshtml" />
+    <Content Include="Views\UserInfo\Details.cshtml" />
+    <Content Include="Views\UserInfo\Edit.cshtml" />
+    <Content Include="Views\UserInfo\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
